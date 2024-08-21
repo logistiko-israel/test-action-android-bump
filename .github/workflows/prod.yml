@@ -16,6 +16,8 @@ jobs:
           versionCode=$(echo "${{ github.ref_name }}" | tr -d '.')
           sed -i "s/versionCodeVersion [0-9]\+/versionCodeVersion $github.ref_name/g" android/variables.gradle
           sed -i "s/versionNameVersion \"[^\"]*\"/versionName \"${{ github.ref_name }}\"/g" android/variables.gradle
-          git add android/variables.gradle
+          git config --global user.email "github-actions[bot]@users.noreply.github.com
+          git config --global user.name "github-actions[bot]"
+	  git add android/variables.gradle
           git commit -m "Bump version to ${{github.ref_name}}"
           git push origin main
