@@ -12,13 +12,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ⬆️ Bump version of package.json
-        uses: ramonpaolo/bump-version@v2.3.1
-        with:
-          tag: ${{ github.ref_name }}
-          commit: true
-          branch_to_push: 'main'
-
       - name: 🌏 Set up Git
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
