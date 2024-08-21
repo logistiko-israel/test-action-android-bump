@@ -33,3 +33,4 @@ jobs:
         with:
           default_author: github_actions
           message: 'Bump version to ${{ env.tag_name }}'
+          pull: main
