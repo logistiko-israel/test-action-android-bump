@@ -11,14 +11,34 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: ⬆️ Bump version on variables.gradle
+
+      - name: ⬆️ Bump version of package.json
+        uses: ramonpaolo/bump-version@v2.3.1
+        with:
+          tag: ${{ github.ref_name }}
+          commit: true
+          branch_to_push: 'main'
+
+      - name: 🌏 Set up Git
         run: |
-          versionCode=$(echo "${{ github.ref_name }}" | tr -d '.')
-          sed -i "s/versionCodeVersion [0-9]\+/versionCodeVersion $versionCode/g" android/variables.gradle
-          sed -i "s/versionNameVersion \"[^\"]*\"/versionName \"${{ github.ref_name }}\"/g" android/variables.gradle
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git status
-          # git add .
-          # git commit -m "bump-version: bump gradle version to ${{github.ref_name}}"
-          # git push origin main
+
+      - name: Extract tag name and clean version
+        id: extract_version
+        run: |
+          tag_name="${GITHUB_REF##*/}"
+          clean_version=$(echo "$tag_name" | tr -d '.')
+          echo "tag_name=$tag_name" >> $GITHUB_ENV
+          echo "clean_version=$clean_version" >> $GITHUB_ENV
+
+      - name: Update version in variables.gradle
+        run: |
+          sed -i "s/versionCodeVersion = [0-9]\+/versionCodeVersion = ${{ env.clean_version }}/g" android/variables.gradle
+          sed -i "s/versionNameVersion = '.*'/versionNameVersion = '${{ env.tag_name }}'/g" android/variables.gradle
+
+      - name: ☁️ Commit and push changes
+        run: |
+          git add android/variables.gradle
+          git commit -m "bump-version: updated to ${{ github.ref_name }}"
+          git push origin main
