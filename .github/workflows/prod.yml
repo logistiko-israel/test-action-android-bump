@@ -1,0 +1,21 @@
+on:
+  release:
+    types: [released]
+
+jobs:
+  version_bump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: ✅ Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: ⬆️ Bump version on variables.gradle
+        run: |
+          versionCode=$(echo "${{ github.ref_name }}" | tr -d '.')
+          sed -i "s/versionCodeVersion [0-9]\+/versionCodeVersion $github.ref_name/g" android/variables.gradle
+          sed -i "s/versionNameVersion \"[^\"]*\"/versionName \"${{ github.ref_name }}\"/g" android/variables.gradle
+          git add android/variables.gradle
+          git commit -m "Bump version to ${{github.ref_name}}"
+          git push origin main

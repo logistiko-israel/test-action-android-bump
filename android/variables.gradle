@@ -1,0 +1,4 @@
+ext {
+  versionCodeVersion = 1
+  versionNameVersion = '1.0.0'
+}
