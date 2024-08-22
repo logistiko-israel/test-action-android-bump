@@ -1,4 +1,4 @@
 ext {
   versionCodeVersion = prueba_mal
-  versionNameVersion = 'prueba_mal'
+  versionNameVersion = '1.0.146'
 }

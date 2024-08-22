@@ -1,6 +1,6 @@
 {
   "name": "test-action-android-bump",
-  "version": "prueba_mal",
+  "version": "1.0.146",
   "description": "",
   "main": "index.js",
   "scripts": {
