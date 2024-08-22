@@ -10,6 +10,13 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: 🛑 Validate tag name
+        run: |
+          if [[ ! $GITHUB_REF =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "The release tag name format is incorrect. It must have the following format: \"1.2.3\""
+            exit 1
+          fi
+
       - name: ✅ Checkout
         uses: actions/checkout@v4
         with:
