@@ -4,6 +4,7 @@ on:
 
 jobs:
   version_bump:
+    name: Update project version
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -20,7 +21,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-      - name: Extract tag name and clean version
+      - name: 🏷️ Extract tag name and clean version
         id: extract_version
         run: |
           tag_name="${GITHUB_REF##*/}"
