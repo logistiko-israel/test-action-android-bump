@@ -28,13 +28,19 @@ jobs:
           echo "tag_name=$tag_name" >> $GITHUB_ENV
           echo "clean_version=$clean_version" >> $GITHUB_ENV
 
-      - name: Update version in variables.gradle
+      - name: ⬆️ Bump version in variables.gradle
         run: |
           sed -i "s/versionCodeVersion = [0-9]\+/versionCodeVersion = ${{ env.clean_version }}/g" android/variables.gradle
           sed -i "s/versionNameVersion = '.*'/versionNameVersion = '${{ env.tag_name }}'/g" android/variables.gradle
+
+      - name: ⬆️ Bump version of package.json
+        uses: ramonpaolo/bump-version@v2.3.1
+        with:
+          tag: ${{ github.ref_name }}
+          commit: false
 
       - name: ☁️ Commit and push changes
         uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
-          message: 'Bump version to ${{ env.tag_name }}'
+          message: 'release: ${{ env.tag_name }}'
