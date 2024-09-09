@@ -1,0 +1,19 @@
+name: rollback
+
+on: workflow_dispatch
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Set latest release as pre-release
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { octokit } = context;
+            const { owner, repo } = context.repo;
+            const { data: releases } = await octokit.repos.listReleases({ owner, repo });
+            const latestRelease = releases.find(release => !release.draft && !release.prerelease);
+            await octokit.repos.updateRelease({ owner, repo, release_id: latestRelease.id, prerelease: true });
