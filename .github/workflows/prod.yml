@@ -52,3 +52,7 @@ jobs:
         with:
           default_author: github_actions
           message: 'release: ${{ env.tag_name }}'
+      - name: Force update the tag to the latest commit
+        run: |
+          git tag -f ${{ env.tag_name }}
+          git push origin --force --tags
