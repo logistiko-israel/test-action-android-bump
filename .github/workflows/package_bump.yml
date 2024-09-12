@@ -25,3 +25,7 @@ jobs:
           tag: ${{ github.ref_name }}
           commit: true
           branch_to_push: 'main'
+      - name: Force update the tag to the latest commit
+        run: |
+          git tag -f ${{ env.TAG_NAME }}
+          git push origin --force --tags
