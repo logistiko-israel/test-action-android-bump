@@ -8,9 +8,14 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Set latest release as pre-release
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
-            console.log(repo.releases);
+            const latest_release = await github.rest.repos.getLatestRelease({
+              owner: owner,
+              repo: repo
+            });
+            const currentDateTime = new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' });
+            await github.rest.repos.updateRelease({owner: owner, repo: repo,release_id: latest_release.data.id, prerelease: true, body: `# ATTENTION: THIS RELEASE WAS ROLLED BACK\nDate: ${currentDateTime}\n` + latest_release.data.body});
