@@ -61,6 +61,8 @@ jobs:
         with:
           fetch-depth: 0
 
+      - run: git rev-parse HEAD
+
       - name: fetch
         run: git fetch origin "${{ github.ref }}"
 
