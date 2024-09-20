@@ -59,6 +59,7 @@ jobs:
 
   look_version:
     runs-on: ubuntu-latest
+    needs: version_bump
     steps:
       - name: ✅ Checkout
         uses: actions/checkout@v4
