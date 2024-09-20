@@ -56,3 +56,13 @@ jobs:
         run: |
           git tag -f ${{ env.tag_name }}
           git push origin --force --tags
+
+  look_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✅ Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: echo version
+        run: cat package.json
